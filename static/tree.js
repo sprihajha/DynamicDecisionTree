@@ -299,6 +299,11 @@ function nextoption(id, originNode) {
                 success: function(response) {
                     s = response.toString();
                     console.log("s: " + s + s.toString());
+                },
+                error: function(request){
+                    console.log("Error executing query.");
+                    $("#debug").html(request.responseText);
+                    $("#debug").html("5566");
                 }
             });
          }
