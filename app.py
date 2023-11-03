@@ -1,9 +1,17 @@
 import json
 import sqlite3
+import psycopg2
 from flask import request
 from flask import Flask, render_template, jsonify
 import csv
+import os
 app = Flask(__name__)
+
+dbname = os.environ.get('DB_NAME')
+user = os.environ.get('DB_USER')
+password = os.environ.get('DB_PASSWORD')
+host = os.environ.get('DB_HOST')
+port = os.environ.get('DB_PORT')
 
 
 @app.route('/')
@@ -103,7 +111,14 @@ def get_sql():
     # print(type(query_result))
 
     # connecting to the database
-    connection = sqlite3.connect("dt.db")
+    # connection = sqlite3.connect("dt.db")
+    connection = psycopg2.connect(
+        dbname=dbname,
+        user=user,
+        password=password,
+        host=host,
+        port=port
+    )
 
     # cursor
     crsr = connection.cursor()
@@ -111,25 +126,22 @@ def get_sql():
     # print statement will execute if there are no errors
     print("Connected to the database")
 
-
     sql_command = """CREATE TABLE IF NOT EXISTS houses (
-    house_number INTEGER PRIMARY KEY AUTOINCREMENT,
+    house_number SERIAL PRIMARY KEY,
     house_name TEXT,
     num_of_bedrooms INTEGER,
     square_feet INTEGER,
-    swimming_pool CHAR(1));"""
+    swimming_pool BOOLEAN);"""
     crsr.execute(sql_command)
-    
+
     # # SQL command to insert the data in the table
     # # sql_command = """INSERT INTO houses (house_name, num_of_bedrooms, square_feet, swimming_pool) VALUES (?, ?, ?, ?);"""
     # # crsr.execute(sql_command, ("Goddard Hall", 1, 1600, 'N'))
     # # crsr.execute(sql_command, ("Palladium Hall", 2, 3100, 'Y'))
     # # crsr.execute(sql_command, ("Lipton Hall", 3, 3300, 'N'))
 
-
-
     sql_command = """CREATE TABLE IF NOT EXISTS comps (
-    house_number INTEGER PRIMARY KEY AUTOINCREMENT,
+    house_number SERIAL PRIMARY KEY,
     id INTEGER,
     date TEXT,
     price INTEGER,
@@ -157,7 +169,7 @@ def get_sql():
     #         csv_reader = csv.reader(csv_file)
     #         next(csv_reader)  # Skip header row
 
-    #         sql_insert_command = """INSERT INTO comps (id,date,price,bedrooms,bathrooms,sqft_living,sqft_lot,floors,waterfront,view,condition,grade,sqft_above,sqft_basement,yr_built,yr_renovated,zipcode,lat,long,sqft_living15,sqft_lot15) 
+    #         sql_insert_command = """INSERT INTO comps (id,date,price,bedrooms,bathrooms,sqft_living,sqft_lot,floors,waterfront,view,condition,grade,sqft_above,sqft_basement,yr_built,yr_renovated,zipcode,lat,long,sqft_living15,sqft_lot15)
     #                                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"""
 
     #         # Step 4: Insert Data
@@ -206,7 +218,6 @@ def get_sql():
     return jsonify('', render_template('sql.html', x=sql_ans))
 
 
-
 @app.route('/input_query_result', methods=['POST'])
 def input_query_result():
     data = request.get_json()
@@ -222,12 +233,17 @@ def input_query_result():
         cur_query = cur_query.replace(key, all_inputs[key])
         print("Query after key-value replacement: " + cur_query)
 
-        
-
     # Connect to database
-    connection = sqlite3.connect("dt.db")
+    # connection = sqlite3.connect("dt.db")
+    connection = psycopg2.connect(
+        dbname=dbname,
+        user=user,
+        password=password,
+        host=host,
+        port=port
+    )
     crsr = connection.cursor()
-    
+
     print(cur_query)
     try:
         crsr.execute(cur_query)
@@ -244,17 +260,12 @@ def input_query_result():
     # Close the connection
     connection.close()
 
-    
-
-
-
     if result == "":
         return jsonify(query_result)
     elif "RESULT" in result:
-        result = result.replace("RESULT", query_result) 
-        
-    return jsonify(result)
+        result = result.replace("RESULT", query_result)
 
+    return jsonify(result)
 
 
 if __name__ == "__main__":
