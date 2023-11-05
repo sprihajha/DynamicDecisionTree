@@ -267,18 +267,50 @@ function nextoption(id, originNode) {
     let len = str[id].search(',');
     let s = str[id].substring(len + 1, str[id].length);
     let curInputKey = "";
+    let curInput = "";
+    let curInputSubstring = "";
+    let userPrompt = "";
     console.log("Current Node: " + s);
 
-    // detect if text contains input and query
-    // Syntax: "INPUT: <input question> QUERY: <sql query> RETURN: <result string - with 'RESULT' to be replaced by the result of the query>"
-    if (s.includes("INPUT") && s.includes("QUERY:")) {
-        if (s[s.length - 1] == '?'){
-            s = s.substring(0, s.length - 1)
-        } 
-        curInputKey = s.substring(s.search("INPUT"), s.search(":"));
-        console.log("curInputKey: " + curInputKey);
-        let userInput = prompt(s.substring(8, s.search("QUERY:")));
-        allInputs[curInputKey] = userInput;
+    // Syntax: "INPUT: <input prompt> QUERY: <sql query> RETURN: <result string - with 'RESULT' to be replaced by the result of the query>"
+    if (s.includes("QUERY:") && s.includes("RETURN:")) {
+    //     if (s[s.length - 1] == '?'){
+    //         s = s.substring(0, s.length - 1)
+    //     } 
+        // extracts input substrings from line based on and stores each in the list inputSubstrings
+        if (s.includes("INPUT")) {
+            let regex = /(INPUT\d+: .*?)(?= INPUT\d+:| QUERY:|$)/g;
+            let inputSubstrings = s.match(regex) || [];
+
+            console.log("inputSubstrings: " + inputSubstrings);
+            for (let i = 0; i < inputSubstrings.length; i++) {
+                curInputKey = inputSubstrings[i].substring(0, inputSubstrings[i].search(":"));
+                curInput = prompt(inputSubstrings[i].substring(inputSubstrings[i].search(":") + 1));
+                // forces user to enter input
+                while (typeof curInput == 'undefined' || curInput == null) {
+                        curInput = prompt(inputSubstrings[i].substring(inputSubstrings[i].search(":") + 1));
+                }
+                allInputs[curInputKey] = curInput;
+            }
+        }
+
+        // curInputKey = s.substring(s.search("INPUT"), s.search(":"));
+        // console.log("curInputKey: " + curInputKey);
+
+        // if (s.search("INPUT") != -1) {
+        //     userPrompt = s.substring(s.search(":") + 1, s.substring(s.search(":") + 1), + s.search("INPUT"));
+        // }
+        // else{
+        //     userPrompt =s.substring(s.search(":") + 1, s.search("QUERY:"));
+        // }
+        // userInput = prompt(userPrompt);
+        // while (typeof userInput == 'undefined' || userInput == null) {
+        //     userInput = prompt(userPrompt);
+        // }
+
+
+
+            
         // allInputs.push(userInput);
         let query = s.substring(s.search("QUERY:") + 7);
         let resultStr = "";
@@ -288,26 +320,26 @@ function nextoption(id, originNode) {
             resultStr = s.substring(s.search("RETURN:") + 7);
         }
 
-        if (userInput != null) {
-            // Send the input to the server
-            $.ajax({
-                url: "/input_query_result",
-                type: "POST",
-                contentType: "application/json",
-                async: false,
-                data: JSON.stringify({"query": query, "allInputs": allInputs, "resultStr": resultStr}),
-                success: function(response) {
-                    s = response.toString();
-                    console.log("s: " + s + s.toString());
-                },
-                error: function(request){
-                    console.log("Error executing query.");
-                    $("#debug").html(request.responseText);
-                    $("#debug").html("5566");
-                }
-            });
-         }
-        }        
+        // Send the input to the server
+        $.ajax({
+            url: "/input_query_return",
+            type: "POST",
+            contentType: "application/json",
+            async: false,
+            data: JSON.stringify({"query": query, "allInputs": allInputs, "resultStr": resultStr}),
+            success: function(response) {
+                s = response.toString();
+                console.log("s: " + s + s.toString());
+            },
+            error: function(request){
+                console.log("Error executing query.");
+                $("#debug").html(request.responseText);
+                $("#debug").html("5566");
+            }
+        });
+    }
+
+                
     
     // detect if the text contains link and add hypertext reference to the link
     let s_len = s.search("https");

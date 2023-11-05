@@ -1,10 +1,18 @@
 import json
 import sqlite3
+import re
+import psycopg2
 from flask import request
 from flask import Flask, render_template, jsonify
 import csv
+import os
 app = Flask(__name__)
 
+dbname = os.environ.get('DB_NAME')
+user = os.environ.get('DB_USER')
+password = os.environ.get('DB_PASSWORD')
+host = os.environ.get('DB_HOST')
+port = os.environ.get('DB_PORT')
 
 @app.route('/')
 def index():
@@ -103,7 +111,14 @@ def get_sql():
     # print(type(query_result))
 
     # connecting to the database
-    connection = sqlite3.connect("dt.db")
+    # connection = sqlite3.connect("dt.db")
+    connection = psycopg2.connect(
+        dbname=dbname,
+        user=user,
+        password=password,
+        host=host,
+        port=port
+    )
 
     # cursor
     crsr = connection.cursor()
@@ -113,11 +128,11 @@ def get_sql():
 
 
     sql_command = """CREATE TABLE IF NOT EXISTS houses (
-    house_number INTEGER PRIMARY KEY AUTOINCREMENT,
+    house_number SERIAL PRIMARY,
     house_name TEXT,
-    num_of_bedrooms INTEGER,
-    square_feet INTEGER,
-    swimming_pool CHAR(1));"""
+    num_of_bedrooms SERIAL,
+    square_feet SERIAL,
+    swimming_pool BOOLEAN);"""
     crsr.execute(sql_command)
     
     # # SQL command to insert the data in the table
@@ -129,27 +144,26 @@ def get_sql():
 
 
     sql_command = """CREATE TABLE IF NOT EXISTS comps (
-    house_number INTEGER PRIMARY KEY AUTOINCREMENT,
-    id INTEGER,
+    id SERIAL,
     date TEXT,
-    price INTEGER,
-    bedrooms INTEGER,
+    price SERIAL,
+    bedrooms SERIAL,
     bathrooms REAL,
-    sqft_living INTEGER,
-    sqft_lot,floors INTEGER,
-    waterfront INTEGER,
-    view INTEGER,
-    condition INTEGER,
-    grade INTEGER,
-    sqft_above INTEGER,
-    sqft_basement INTEGER,
-    yr_built INTEGER,
-    yr_renovated INTEGER,
-    zipcode INTEGER,
+    sqft_living SERIAL,
+    sqft_lot,floors SERIAL,
+    waterfront SERIAL,
+    view SERIAL,
+    condition SERIAL,
+    grade SERIAL,
+    sqft_above SERIAL,
+    sqft_basement SERIAL,
+    yr_built SERIAL,
+    yr_renovated SERIAL,
+    zipcode SERIAL,
     lat REAL,
     long REAL,
-    sqft_living15 INTEGER,
-    sqft_lot15 INTEGER);"""
+    sqft_living15 SERIAL,
+    sqft_lot15 SERIAL);"""
     crsr.execute(sql_command)
 
     # # populates comps table with data from comparables_dataset.csv
@@ -172,13 +186,13 @@ def get_sql():
     #             crsr.execute(sql_insert_command, (row))
 
     sql_command = """CREATE TABLE IF NOT EXISTS federal_tax_rates (
-    bracket_tax_rate INTEGER,
-    min_income_single INTEGER,
-    max_income_single INTEGER,
-    min_income_married INTEGER,
-    max_income_married INTEGER,
-    min_income_head_of_household INTEGER,
-    max_head_of_household INTEGER);"""
+    bracket_tax_rate SERIAL,
+    min_income_single SERIAL,
+    max_income_single SERIAL,
+    min_income_married SERIAL,
+    max_income_married SERIAL,
+    min_income_head_of_household SERIAL,
+    max_head_of_household SERIAL);"""
     crsr.execute(sql_command)
 
     # populates federal_tax_rates table with data from tax_brackets.csv
@@ -207,7 +221,7 @@ def get_sql():
 
 
 
-@app.route('/input_query_result', methods=['POST'])
+@app.route('/input_query_return', methods=['POST'])
 def input_query_result():
     data = request.get_json()
     query = data.get("query")
@@ -217,9 +231,11 @@ def input_query_result():
     # print(result)
     print("all_inputs: ", all_inputs)
 
-    # Replace INPUTX keywords with corresponding input values based on key-value pairs in all_inputs
+    # Replace INPUT keywords with corresponding input values based on key-value pairs in all_inputs
+    print("Query after key-value replacement: " + cur_query)
     for key in all_inputs:
-        cur_query = cur_query.replace(key, all_inputs[key])
+        pattern = re.compile(r'\b{}\b'.format(re.escape(key)))
+        cur_query = pattern.sub(all_inputs[key], cur_query)
         print("Query after key-value replacement: " + cur_query)
 
         
@@ -252,7 +268,6 @@ def input_query_result():
         return jsonify(query_result)
     elif "RESULT" in result:
         result = result.replace("RESULT", query_result) 
-        
     return jsonify(result)
 
 
