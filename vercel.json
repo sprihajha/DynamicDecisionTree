@@ -2,14 +2,21 @@
   "version": 2,
   "builds": [
     {
-      "src": "./app.py",
+      "src": "app.py",
       "use": "@vercel/python"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/"
+      "dest": "app.py"
     }
-  ]
+  ],
+  "env": {
+    "DB_NAME": "DB_NAME",
+    "DB_USER": "DB_USER",
+    "DB_PASSWORD": "DB_PASSWORD",
+    "DB_HOST": "DB_HOST",
+    "DB_PORT": "DB_PORT"
+  }
 }
