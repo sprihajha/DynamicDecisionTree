@@ -1,9 +1,7 @@
 import json
-import sqlite3
 import psycopg2
 from flask import request
 from flask import Flask, render_template, jsonify
-import csv
 import os
 app = Flask(__name__)
 

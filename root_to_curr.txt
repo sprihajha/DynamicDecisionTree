@@ -1,4 +1,0 @@
-
-What is your marital status (as of the upcoming April 15)?
---If Single, Are you a parent, step-parent, or caretaker of a close relative (sibling, step-sibling, neice/nephew)?
-----If No, INPUT3: Enter your income: QUERY: SELECT SUM(CASE WHEN INPUT3 > max_income_single THEN (max_income_single - min_income_single) * bracket_tax_rate / 100 WHEN INPUT3 <= max_income_single AND INPUT3 > min_income_single THEN (INPUT3 - min_income_single) * bracket_tax_rate / 100 ELSE 0 END) AS total_tax FROM federal_tax_rates WHERE min_income_single <= INPUT3 RETURN: You should file taxes as a Single. Your total federal tax, excluding deductions, is $RESULT.
