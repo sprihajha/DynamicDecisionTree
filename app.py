@@ -1,11 +1,11 @@
 import json
 import sqlite3
-import re
-import psycopg2
 from flask import request
 from flask import Flask, render_template, jsonify
 import csv
 import os
+import re
+import psycopg2
 app = Flask(__name__)
 
 dbname = os.environ.get('DB_NAME')
@@ -98,126 +98,125 @@ def get_subtree():
     return query_result
 
 
-@app.route('/get_sql', methods=['POST'])
-def get_sql():
-    # and execute the sql command sent from the tree.js through ajax.
-    # it is called when the text in the new box is a sql command.
-    # output: send the query_result of the sql command back to tree.js
-    output = request.get_json()
-    # print(output)
-    # print(type(output))
-    query_result = json.loads(output)
-    # print(query_result)
-    # print(type(query_result))
+# @app.route('/get_sql', methods=['POST'])
+# def get_sql():
+#     # and execute the sql command sent from the tree.js through ajax.
+#     # it is called when the text in the new box is a sql command.
+#     # output: send the query_result of the sql command back to tree.js
+#     output = request.get_json()
+#     # print(output)
+#     # print(type(output))
+#     query_result = json.loads(output)
+#     # print(query_result)
+#     # print(type(query_result))
 
-    # connecting to the database
-    # connection = sqlite3.connect("dt.db")
-    connection = psycopg2.connect(
-        dbname=dbname,
-        user=user,
-        password=password,
-        host=host,
-        port=port
-    )
+#     # connecting to the database
+#     # connection = sqlite3.connect("dt.db")
+#     # connection = sqlite3.connect("dt.db")
+#     connection = psycopg2.connect(
+#         dbname=dbname,
+#         user=user,
+#         password=password,
+#         host=host,
+#         port=port
+#     )
 
-    # cursor
-    crsr = connection.cursor()
+#     # cursor
+#     crsr = connection.cursor()
 
-    # print statement will execute if there are no errors
-    print("Connected to the database")
+#     # print statement will execute if there are no errors
+#     print("Connected to the database")
 
+#     sql_command = """CREATE TABLE IF NOT EXISTS houses (
+#     house_number INTEGER PRIMARY KEY AUTOINCREMENT,
+#     house_name TEXT,
+#     num_of_bedrooms INTEGER,
+#     square_feet INTEGER,
+#     swimming_pool BOOLEAN;"""
+#     crsr.execute(sql_command)
 
-    sql_command = """CREATE TABLE IF NOT EXISTS houses (
-    house_number SERIAL PRIMARY,
-    house_name TEXT,
-    num_of_bedrooms SERIAL,
-    square_feet SERIAL,
-    swimming_pool BOOLEAN);"""
-    crsr.execute(sql_command)
-    
-    # # SQL command to insert the data in the table
-    # # sql_command = """INSERT INTO houses (house_name, num_of_bedrooms, square_feet, swimming_pool) VALUES (?, ?, ?, ?);"""
-    # # crsr.execute(sql_command, ("Goddard Hall", 1, 1600, 'N'))
-    # # crsr.execute(sql_command, ("Palladium Hall", 2, 3100, 'Y'))
-    # # crsr.execute(sql_command, ("Lipton Hall", 3, 3300, 'N'))
+#     # # SQL command to insert the data in the table
+#     # # sql_command = """INSERT INTO houses (house_name, num_of_bedrooms, square_feet, swimming_pool) VALUES (?, ?, ?, ?);"""
+#     # # crsr.execute(sql_command, ("Goddard Hall", 1, 1600, 'N'))
+#     # # crsr.execute(sql_command, ("Palladium Hall", 2, 3100, 'Y'))
+#     # # crsr.execute(sql_command, ("Lipton Hall", 3, 3300, 'N'))
 
+#     sql_command = """CREATE TABLE IF NOT EXISTS comps (
+#     house_number INTEGER PRIMARY KEY AUTOINCREMENT,
+#     id INTEGER,
+#     date TEXT,
+#     price SERIAL,
+#     bedrooms SERIAL,
+#     bathrooms REAL,
+#     sqft_living SERIAL,
+#     sqft_lot,floors SERIAL,
+#     waterfront SERIAL,
+#     view SERIAL,
+#     condition SERIAL,
+#     grade SERIAL,
+#     sqft_above SERIAL,
+#     sqft_basement SERIAL,
+#     yr_built SERIAL,
+#     yr_renovated SERIAL,
+#     zipcode SERIAL,
+#     lat REAL,
+#     long REAL,
+#     sqft_living15 SERIAL,
+#     sqft_lot15 SERIAL);"""
+#     crsr.execute(sql_command)
 
+#     # # populates comps table with data from comparables_dataset.csv
+#     # with open('datasets/kentucky_comps.csv', 'r') as csv_file:
+#     #         csv_reader = csv.reader(csv_file)
+#     #         next(csv_reader)  # Skip header row
 
-    sql_command = """CREATE TABLE IF NOT EXISTS comps (
-    id SERIAL,
-    date TEXT,
-    price SERIAL,
-    bedrooms SERIAL,
-    bathrooms REAL,
-    sqft_living SERIAL,
-    sqft_lot,floors SERIAL,
-    waterfront SERIAL,
-    view SERIAL,
-    condition SERIAL,
-    grade SERIAL,
-    sqft_above SERIAL,
-    sqft_basement SERIAL,
-    yr_built SERIAL,
-    yr_renovated SERIAL,
-    zipcode SERIAL,
-    lat REAL,
-    long REAL,
-    sqft_living15 SERIAL,
-    sqft_lot15 SERIAL);"""
-    crsr.execute(sql_command)
+#     #         sql_insert_command = """INSERT INTO comps (id,date,price,bedrooms,bathrooms,sqft_living,sqft_lot,floors,waterfront,view,condition,grade,sqft_above,sqft_basement,yr_built,yr_renovated,zipcode,lat,long,sqft_living15,sqft_lot15)
+#     #                                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"""
 
-    # # populates comps table with data from comparables_dataset.csv
-    # with open('datasets/kentucky_comps.csv', 'r') as csv_file:
-    #         csv_reader = csv.reader(csv_file)
-    #         next(csv_reader)  # Skip header row
+#     #         # Step 4: Insert Data
+#     #         for row in csv_reader:
+#     #             # values.append(row)
+#     #             # zip_code = int(row[0])  # 'zipcode' column
+#     #             # sale_price = int(row[1])  # 'price' column
+#     #             # house_square_footage = int(row[2])  # 'sqft_living' column
+#     #             # bedrooms = int(row[3])  # 'bedrooms' column
 
-    #         sql_insert_command = """INSERT INTO comps (id,date,price,bedrooms,bathrooms,sqft_living,sqft_lot,floors,waterfront,view,condition,grade,sqft_above,sqft_basement,yr_built,yr_renovated,zipcode,lat,long,sqft_living15,sqft_lot15) 
-    #                                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"""
+#     #             # crsr.execute(sql_insert_command, (zip_code, sale_price, house_square_footage, bedrooms))
+#     #             crsr.execute(sql_insert_command, (row))
 
-    #         # Step 4: Insert Data
-    #         for row in csv_reader:
-    #             # values.append(row)
-    #             # zip_code = int(row[0])  # 'zipcode' column
-    #             # sale_price = int(row[1])  # 'price' column
-    #             # house_square_footage = int(row[2])  # 'sqft_living' column
-    #             # bedrooms = int(row[3])  # 'bedrooms' column
+#     sql_command = """CREATE TABLE IF NOT EXISTS federal_tax_rates (
+#     bracket_tax_rate SERIAL,
+#     min_income_single SERIAL,
+#     max_income_single SERIAL,
+#     min_income_married SERIAL,
+#     max_income_married SERIAL,
+#     min_income_head_of_household SERIAL,
+#     max_head_of_household SERIAL);"""
+#     crsr.execute(sql_command)
 
-    #             # crsr.execute(sql_insert_command, (zip_code, sale_price, house_square_footage, bedrooms))
-    #             crsr.execute(sql_insert_command, (row))
+#     # populates federal_tax_rates table with data from tax_brackets.csv
+#     # with open('datasets/federal_tax_brackets.csv', 'r') as csv_file:
+#     #     csv_reader = csv.reader(csv_file)
+#     #     next(csv_reader)  # Skip header row
 
-    sql_command = """CREATE TABLE IF NOT EXISTS federal_tax_rates (
-    bracket_tax_rate SERIAL,
-    min_income_single SERIAL,
-    max_income_single SERIAL,
-    min_income_married SERIAL,
-    max_income_married SERIAL,
-    min_income_head_of_household SERIAL,
-    max_head_of_household SERIAL);"""
-    crsr.execute(sql_command)
+#     #     sql_insert_command = """INSERT INTO federal_tax_rates (bracket_tax_rate, min_income_single, max_income_single, min_income_married, max_income_married, min_income_head_of_household, max_head_of_household) VALUES (?, ?, ?, ?, ?, ?, ?);"""
 
-    # populates federal_tax_rates table with data from tax_brackets.csv
-    # with open('datasets/federal_tax_brackets.csv', 'r') as csv_file:
-    #     csv_reader = csv.reader(csv_file)
-    #     next(csv_reader)  # Skip header row
+#     #     for row in csv_reader:
+#     #         crsr.execute(sql_insert_command, (row))
 
-    #     sql_insert_command = """INSERT INTO federal_tax_rates (bracket_tax_rate, min_income_single, max_income_single, min_income_married, max_income_married, min_income_head_of_household, max_head_of_household) VALUES (?, ?, ?, ?, ?, ?, ?);"""
+#     # Commit changes
+#     connection.commit()
 
-    #     for row in csv_reader:
-    #         crsr.execute(sql_insert_command, (row))
+#     crsr.execute(query_result['0'])
+#     sql_ans = crsr.fetchall()
 
-    # Commit changes
-    connection.commit()
+#     # for i in sql_ans:
+#     #     print(i)
 
-    crsr.execute(query_result['0'])
-    sql_ans = crsr.fetchall()
+#     # close the connection
+#     connection.close()
 
-    # for i in sql_ans:
-    #     print(i)
-
-    # close the connection
-    connection.close()
-
-    return jsonify('', render_template('sql.html', x=sql_ans))
+#     return jsonify('', render_template('sql.html', x=sql_ans))
 
 
 
@@ -238,13 +237,18 @@ def input_query_result():
         cur_query = pattern.sub(all_inputs[key], cur_query)
         print("Query after key-value replacement: " + cur_query)
 
-        
-
     # Connect to database
-    connection = sqlite3.connect("dt.db")
+    # connection = sqlite3.connect("dt.db")
+    connection = psycopg2.connect(
+        dbname=dbname,
+        user=user,
+        password=password,
+        host=host,
+        port=port
+    )
     crsr = connection.cursor()
-    
-    print(cur_query)
+
+    print("current query: " + cur_query)
     try:
         crsr.execute(cur_query)
         query_result = crsr.fetchall()
@@ -260,16 +264,12 @@ def input_query_result():
     # Close the connection
     connection.close()
 
-    
-
-
-
     if result == "":
         return jsonify(query_result)
     elif "RESULT" in result:
         result = result.replace("RESULT", query_result) 
+        
     return jsonify(result)
-
 
 
 if __name__ == "__main__":
