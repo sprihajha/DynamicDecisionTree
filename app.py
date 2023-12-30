@@ -5,6 +5,8 @@ from flask import Flask, render_template, jsonify
 import os
 app = Flask(__name__)
 
+#Test
+
 dbname = os.environ.get('DB_NAME')
 user = os.environ.get('DB_USER')
 password = os.environ.get('DB_PASSWORD')
