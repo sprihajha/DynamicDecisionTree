@@ -1,7 +1,0 @@
-[user]
-	name = Spriha Jha
-	email = jha.spriha@gmail.com
-	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIClHeJ9eMaUDpF17Aiyu3DmZ6q4PUbZ2A2XvGUhgK7V
-
-[gpg]
-	format = ssh
