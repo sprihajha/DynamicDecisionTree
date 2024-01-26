@@ -1,10 +1,31 @@
-are you happy?
---if yes, then great
---if meh, then get a lollipop. did that help?
-----if a lot, then great
-----if a little, then get another one
---if no, then see a shrink
---if not interested, which of these topics are you interested in: myeloma diagnosis, social security card, student visa?
+Are you happy?
+--if yes, Then great
+--if meh, Then get a lollipop. did that help?
+----if a lot, Then great
+----if a little, Then get another one
+--if no, Would any of these topics cheer you up: myeloma diagnosis, social security card, student visa?
 ----if interested in NYU, DOCUMENT: https://www.nyu.edu
 ----if interested in myeloma, DECISIONTREE: https://elliot2878.github.io/decision_tree.github.io/myeloma.txt
-----if interested in APPLE, DOCUMENT: https://www.apple.com
+----if interested in APPLE, Which category of apple products are you interested in?
+------if interested in iPhone, QUERY: SELECT product_name FROM apple_products WHERE category = 'iPhone' RETURN: Which of the following iPhones are you interested in: RESULT?
+--------If iPhone 15 Pro, QUERY: SELECT product_link FROM apple_products WHERE product_name = 'iPhone 15 Pro' RETURN: You can find this product here: DOCUMENT: RESULT
+--------If iPhone 15, QUERY: SELECT product_link FROM apple_products WHERE product_name = 'iPhone 15' RETURN: You can find this product here: DOCUMENT: RESULT
+--------If iPhone 14, QUERY: SELECT product_link FROM apple_products WHERE product_name = 'iPhone 14' RETURN: You can find this product here: DOCUMENT: RESULT
+--------If iPhone 13, QUERY: SELECT product_link FROM apple_products WHERE product_name = 'iPhone 13' RETURN: You can find this product here: DOCUMENT: RESULT
+------if interested in iPad, QUERY: SELECT product_name FROM apple_products WHERE category = 'iPad' RETURN: Which of the following iPads are you interested in: RESULT?
+--------if iPad Pro, QUERY: SELECT product_link FROM apple_products WHERE product_name = 'iPad Pro' RETURN: You can find this product here: DOCUMENT: RESULT
+--------if iPad Air, QUERY: SELECT product_link FROM apple_products WHERE product_name = 'iPad Air' RETURN: You can find this product here: DOCUMENT: RESULT
+--------if iPad (10th Generation), QUERY: SELECT product_link FROM apple_products WHERE product_name = 'iPad (10th Generation)' RETURN: You can find this product here: DOCUMENT: RESULT
+--------if iPad (9th Generation), QUERY: SELECT product_link FROM apple_products WHERE product_name = 'iPad (9th Generation)' RETURN: You can find this product here: DOCUMENT: RESULT
+--------if iPad Mini, QUERY: SELECT product_link FROM apple_products WHERE product_name = 'iPad Mini' RETURN: You can find this product here: DOCUMENT: RESULT
+------if interested in Mac, QUERY: SELECT product_name FROM apple_products WHERE category = 'Mac' RETURN: Which of the following Macs are you interested in: RESULT?
+--------if Mac Pro, QUERY: SELECT product_link FROM apple_products WHERE product_name = 'Mac Pro' RETURN: You can find this product here: DOCUMENT: RESULT
+--------if Mac Studio, QUERY: SELECT product_link FROM apple_products WHERE product_name = 'Mac Studio' RETURN: You can find this product here: DOCUMENT: RESULT
+--------if Mac Mini, QUERY: SELECT product_link FROM apple_products WHERE product_name = 'Mac Mini' RETURN: You can find this product here: DOCUMENT: RESULT
+--------if iMac, QUERY: SELECT product_link FROM apple_products WHERE product_name = 'iMac' RETURN: You can find this product here: DOCUMENT: RESULT
+--------if Mac MacBook Pro 16, QUERY: SELECT product_link FROM apple_products WHERE product_name = 'MacBook Pro 16' RETURN: You can find this product here: DOCUMENT: RESULT
+--------if Mac MacBook Pro 14, QUERY: SELECT product_link FROM apple_products WHERE product_name = 'MacBook Pro 14' RETURN: You can find this product here: DOCUMENT: RESULT
+--------if Mac MacBook Air M1, QUERY: SELECT product_link FROM apple_products WHERE product_name = 'MacBook Air M1' RETURN: You can find this product here: DOCUMENT: RESULT
+--------if MacBook Air 13-inch M2, QUERY: SELECT product_link FROM apple_products WHERE product_name = 'MacBook Air 13-inch M2' RETURN: You can find this product here: DOCUMENT: RESULT
+--------if MacBook Air 15-inch M2, QUERY: SELECT product_link FROM apple_products WHERE product_name = 'MacBook Air 15-inch M2' RETURN: You can find this product here: DOCUMENT: RESULT
+------if interested in Apple Watch, INPUT1: Enter the name of the Apple Watch you are interested in. Your options are "Apple Watch Series 9", "Apple Watch Ultra 2", or "Apple Watch SE" QUERY: SELECT product_link FROM apple_products WHERE lower(product_name) = lower(INPUT1) RETURN: You can find this product here: DOCUMENT: RESULT
