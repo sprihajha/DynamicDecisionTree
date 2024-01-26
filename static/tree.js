@@ -290,6 +290,11 @@ function nextoption(id, originNode) {
                 while (typeof curInput == 'undefined' || curInput == null) {
                         curInput = prompt(inputSubstrings[i].substring(inputSubstrings[i].search(":") + 1));
                 }
+
+                if (isNaN(curInput)) {
+                    curInput = `"${curInput}"`;
+                }
+                
                 allInputs[curInputKey] = curInput;
             }
         }
@@ -329,7 +334,7 @@ function nextoption(id, originNode) {
             data: JSON.stringify({"query": query, "allInputs": allInputs, "resultStr": resultStr}),
             success: function(response) {
                 s = response.toString();
-                console.log("s: " + s + s.toString());
+                console.log("s: " + s.toString());
             },
             error: function(request){
                 console.log("Error executing query.");
@@ -345,6 +350,7 @@ function nextoption(id, originNode) {
     let s_len = s.search("https");
     let link = s.substring(s_len, s.length);
     if(s.includes("DOCUMENT") || s.includes("DECISIONTREE")) {
+        console.log("DOCUMENT is running after INPUT");
         let link_ref = '<a href="' + link + '" target="_blank">' + link + '</a>';
         s = s.substring(0, s_len) + link_ref;
     }
