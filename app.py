@@ -247,19 +247,55 @@ def input_query_result():
         port=port
     )
     crsr = connection.cursor()
+    print("Connected to the database")
+
+    # sql_command = """DROP TABLE IF EXISTS apple_products;"""
+    # crsr.execute(sql_command)
+
+    sql_command = """CREATE TABLE IF NOT EXISTS apple_products (
+    category TEXT,
+    # product_name TEXT,
+    # product_link TEXT);"""
+    # crsr.execute(sql_command)
+
+    # iPhone  = [["iPhone 15 Pro", "https://www.apple.com/iphone-15-pro/"], ["iPhone 15", "https://www.apple.com/iphone-15/"], ["iPhone 14", "https://www.apple.com/shop/buy-iphone/iphone-14"], ["iPhone 13", "https://www.apple.com/shop/buy-iphone/iphone-13"]] 
+
+    # Mac = [["Mac Pro", "https://www.apple.com/mac-pro/"], ["Mac Studio", "https://www.apple.com/mac-studio/"], ["Mac Mini", "https://www.apple.com/mac-mini/"], ["iMac", "https://www.apple.com/imac/"], ["MacBook Pro 16", "https://www.apple.com/shop/buy-mac/macbook-pro/16-inch"], ["MacBook Pro 14", "https://www.apple.com/shop/buy-mac/macbook-pro/14-inch"], ["MacBook Air M1", "https://www.apple.com/macbook-air-m1/"], ["MacBook Air 13-inch M2", "https://www.apple.com/shop/buy-mac/macbook-air/13-inch-m2"], ["MacBook Air 15-inch M2", "https://www.apple.com/shop/buy-mac/macbook-air/15-inch-m2"]]
+
+    # iPad = [["IPad Pro", "https://www.apple.com/ipad-pro/"], ["IPad Air", "https://www.apple.com/ipad-air/"], ["IPad (10th Generation)", "https://www.apple.com/shop/buy-ipad/ipad"], ["iPad (9th Generation)", "https://www.apple.com/shop/buy-ipad/ipad-10-2"], ["iPad Mini", "https://www.apple.com/ipad-mini/"]]
+
+    # Watch = [["Apple Watch Series 9", "https://www.apple.com/apple-watch-series-9/"], ["Apple Watch Ultra 2", "https://www.apple.com/apple-watch-ultra-2/"], ["Apple Watch SE", "https://www.apple.com/apple-watch-se/"]]
+
+    # for i in iPhone:
+    #     sql_command = """INSERT INTO apple_products (category, product_name, product_link) VALUES (?, ?, ?);"""
+    #     crsr.execute(sql_command, ("iPhone", i[0], i[1]))
+    # for i in Mac:
+    #     sql_command = """INSERT INTO apple_products (category, product_name, product_link) VALUES (?, ?, ?);"""
+    #     crsr.execute(sql_command, ("Mac", i[0], i[1]))
+    # for i in iPad:
+    #     sql_command = """INSERT INTO apple_products (category, product_name, product_link) VALUES (?, ?, ?);"""
+    #     crsr.execute(sql_command, ("iPad", i[0], i[1]))
+    # for i in Watch:
+    #     sql_command = """INSERT INTO apple_products (category, product_name, product_link) VALUES (?, ?, ?);"""
+    #     crsr.execute(sql_command, ("Watch", i[0], i[1]))
+
+
 
     print("current query: " + cur_query)
     try:
         crsr.execute(cur_query)
         query_result = crsr.fetchall()
+        print("Original query result: ", query_result)
         # Convert query_result to string and truncate outer parentheses and last comma
         query_result = ' '.join([str(elem) for elem in query_result])[1:-2]
+        if len(query_result) > 0 and query_result[0] == "'" and query_result[-1] == "'":
+            query_result = query_result[1:-1]
         if query_result == "":
             query_result = "No query results found."
-        print("Query result: " + query_result)
+        print("Converted query result: " + query_result)
     except Exception as e:
         query_result = repr(e)
-        print("Error " + query_result)
+        print("Error: " + query_result)
         return jsonify(query_result + ". Please check your query and try again.")
     # Close the connection
     connection.close()
