@@ -8,11 +8,8 @@ import re
 import psycopg2
 app = Flask(__name__)
 
-dbname = os.environ.get('DB_NAME')
-user = os.environ.get('DB_USER')
-password = os.environ.get('DB_PASSWORD')
-host = os.environ.get('DB_HOST')
-port = os.environ.get('DB_PORT')
+# Path to SQLite database file
+DATABASE_FILE = "dt.db"
 
 
 @app.route('/')
@@ -112,14 +109,7 @@ def get_subtree():
 #     # print(type(query_result))
 
     # connecting to the database
-    # connection = sqlite3.connect("dt.db")
-    connection = psycopg2.connect(
-        dbname=dbname,
-        user=user,
-        password=password,
-        host=host,
-        port=port
-    )
+    connection = sqlite3.connect(DATABASE_FILE)
 
 #     # cursor
 #     crsr = connection.cursor()
@@ -127,13 +117,57 @@ def get_subtree():
 #     # print statement will execute if there are no errors
 #     print("Connected to the database")
 
-    sql_command = """CREATE TABLE IF NOT EXISTS houses (
-    house_number SERIAL PRIMARY KEY,
-    house_name TEXT,
-    num_of_bedrooms INTEGER,
-    square_feet INTEGER,
-    swimming_pool BOOLEAN);"""
-    crsr.execute(sql_command)
+    sql_commands = [
+        """CREATE TABLE IF NOT EXISTS houses (
+            house_number INTEGER PRIMARY KEY AUTOINCREMENT,
+            house_name TEXT,
+            num_of_bedrooms INTEGER,
+            square_feet INTEGER,
+            swimming_pool INTEGER
+        );""",
+        """CREATE TABLE IF NOT EXISTS comps (
+            house_number INTEGER PRIMARY KEY AUTOINCREMENT,
+            id INTEGER,
+            date TEXT,
+            price INTEGER,
+            bedrooms INTEGER,
+            bathrooms REAL,
+            sqft_living INTEGER,
+            sqft_lot INTEGER,
+            floors INTEGER,
+            waterfront INTEGER,
+            view INTEGER,
+            condition INTEGER,
+            grade INTEGER,
+            sqft_above INTEGER,
+            sqft_basement INTEGER,
+            yr_built INTEGER,
+            yr_renovated INTEGER,
+            zipcode INTEGER,
+            lat REAL,
+            long REAL,
+            sqft_living15 INTEGER,
+            sqft_lot15 INTEGER
+        );""",
+        """CREATE TABLE IF NOT EXISTS federal_tax_rates (
+            bracket_tax_rate INTEGER,
+            min_income_single INTEGER,
+            max_income_single INTEGER,
+            min_income_married INTEGER,
+            max_income_married INTEGER,
+            min_income_head_of_household INTEGER,
+            max_head_of_household INTEGER
+        );"""
+    ]
+
+
+    # sql_command = """CREATE TABLE IF NOT EXISTS houses (
+    # house_number SERIAL PRIMARY KEY,
+    # house_name TEXT,
+    # num_of_bedrooms INTEGER,
+    # square_feet INTEGER,
+    # swimming_pool BOOLEAN);"""
+    # crsr.execute(sql_command)
 
     # # SQL command to insert the data in the table
     # # sql_command = """INSERT INTO houses (house_name, num_of_bedrooms, square_feet, swimming_pool) VALUES (?, ?, ?, ?);"""
@@ -141,29 +175,29 @@ def get_subtree():
     # # crsr.execute(sql_command, ("Palladium Hall", 2, 3100, 'Y'))
     # # crsr.execute(sql_command, ("Lipton Hall", 3, 3300, 'N'))
 
-    sql_command = """CREATE TABLE IF NOT EXISTS comps (
-    house_number SERIAL PRIMARY KEY,
-    id INTEGER,
-    date TEXT,
-    price INTEGER,
-    bedrooms INTEGER,
-    bathrooms REAL,
-    sqft_living INTEGER,
-    sqft_lot,floors INTEGER,
-    waterfront INTEGER,
-    view INTEGER,
-    condition INTEGER,
-    grade INTEGER,
-    sqft_above INTEGER,
-    sqft_basement INTEGER,
-    yr_built INTEGER,
-    yr_renovated INTEGER,
-    zipcode INTEGER,
-    lat REAL,
-    long REAL,
-    sqft_living15 INTEGER,
-    sqft_lot15 INTEGER);"""
-    crsr.execute(sql_command)
+    # sql_command = """CREATE TABLE IF NOT EXISTS comps (
+    # house_number SERIAL PRIMARY KEY,
+    # id INTEGER,
+    # date TEXT,
+    # price INTEGER,
+    # bedrooms INTEGER,
+    # bathrooms REAL,
+    # sqft_living INTEGER,
+    # sqft_lot,floors INTEGER,
+    # waterfront INTEGER,
+    # view INTEGER,
+    # condition INTEGER,
+    # grade INTEGER,
+    # sqft_above INTEGER,
+    # sqft_basement INTEGER,
+    # yr_built INTEGER,
+    # yr_renovated INTEGER,
+    # zipcode INTEGER,
+    # lat REAL,
+    # long REAL,
+    # sqft_living15 INTEGER,
+    # sqft_lot15 INTEGER);"""
+    # crsr.execute(sql_command)
 
 #     # # populates comps table with data from comparables_dataset.csv
 #     # with open('datasets/kentucky_comps.csv', 'r') as csv_file:
@@ -184,15 +218,15 @@ def get_subtree():
 #     #             # crsr.execute(sql_insert_command, (zip_code, sale_price, house_square_footage, bedrooms))
 #     #             crsr.execute(sql_insert_command, (row))
 
-    sql_command = """CREATE TABLE IF NOT EXISTS federal_tax_rates (
-    bracket_tax_rate INTEGER,
-    min_income_single INTEGER,
-    max_income_single INTEGER,
-    min_income_married INTEGER,
-    max_income_married INTEGER,
-    min_income_head_of_household INTEGER,
-    max_head_of_household INTEGER);"""
-    crsr.execute(sql_command)
+    # sql_command = """CREATE TABLE IF NOT EXISTS federal_tax_rates (
+    # bracket_tax_rate INTEGER,
+    # min_income_single INTEGER,
+    # max_income_single INTEGER,
+    # min_income_married INTEGER,
+    # max_income_married INTEGER,
+    # min_income_head_of_household INTEGER,
+    # max_head_of_household INTEGER);"""
+    # crsr.execute(sql_command)
 
 #     # populates federal_tax_rates table with data from tax_brackets.csv
 #     # with open('datasets/federal_tax_brackets.csv', 'r') as csv_file:
@@ -204,11 +238,8 @@ def get_subtree():
 #     #     for row in csv_reader:
 #     #         crsr.execute(sql_insert_command, (row))
 
-    for sql_command in sql_commands:
-        crsr.execute(sql_command)
-
-#     # Commit changes
-#     connection.commit()
+    # Commit changes
+    connection.commit()
 
 #     crsr.execute(query_result['0'])
 #     sql_ans = crsr.fetchall()
