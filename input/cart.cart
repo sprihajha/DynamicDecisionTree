@@ -1,8 +1,0 @@
-CART:
-|--- petal width (cm) <= 0.80
-|   |--- class: 0
-|--- petal width (cm) > 0.80
-|   |--- petal width (cm) <= 1.75
-|   |   |--- class: 1
-|   |--- petal width (cm) >  1.75
-|   |   |--- class: 2
