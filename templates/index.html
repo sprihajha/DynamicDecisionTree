@@ -1,67 +1,167 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
-
-<head>
+  <head>
     <title>Decision Tree with Animated Links</title>
     <meta charset="utf-8" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+      crossorigin="anonymous"
+    />
 
     <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
-        integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+      integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+      crossorigin="anonymous"
+    />
 
     <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-        crossorigin="anonymous"></script>
-    
-    <link rel="stylesheet" type="text/css" href="../static/homepage.css" /> 
-</head>
-<!-- #648dae -->
-<body style="background-color: #eecda1;">
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+      integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+      crossorigin="anonymous"
+    ></script>
 
-    <div style="text-align: center; " class="jumbotron">
-        <h3>Decision Tree</h3>
-        <h4>Note : 2 Hyphen is 1 indentation</h4>
+    <link rel="stylesheet" type="text/css" href="../static/homepage.css" />
+  </head>
+  <!-- #648dae -->
+  <body style="background-color: #eecda1">
+    <div style="text-align: center" class="jumbotron">
+      <h3>Decision Tree</h3>
+      <h4>Note : 2 Hyphen is 1 indentation</h4>
     </div>
 
     <div class="card">
-        <div class="container">
-            <div id="link"></div>
-            <textarea rows="20" cols="140" wrap=off placeholder="Enter text, select a .txt file from your system, or choose a topic"
-                id="input" style="margin-top: 20px;overflow-y: scroll;"></textarea>
-            <input class="btn btn-primary" type="file">
-            <br />
-            Choose a topic<br>
-            ESG<input name="chooseTopic" type="radio" value="https://sprihajha.github.io/DynamicDecisionTree/input/ESG.txt"> <br>
-            Myeloma<input name="chooseTopic" type="radio" value="https://sprihajha.github.io/DynamicDecisionTree/input/myeloma.txt"> <br>
-            Test Input<input name="chooseTopic" type="radio" value="https://sprihajha.github.io/DynamicDecisionTree/input/test_input.txt"> <br>
-            Macbook Repair<input name="chooseTopic" type="radio" value="https://sprihajha.github.io/DynamicDecisionTree/input/macbookrepair.txt"> <br>
-            Visa<input name="chooseTopic" type="radio" value="https://sprihajha.github.io/DynamicDecisionTree/input/visa.txt"> <br>
-            Housing<input name="chooseTopic" type="radio" value="https://sprihajha.github.io/DynamicDecisionTree/input/housing.txt"> <br>
-            Social Security<input name="chooseTopic" type="radio" value="https://sprihajha.github.io/DynamicDecisionTree/input/collect_social.txt"> <br>
-            Laptop Repair<input name="chooseTopic" type="radio" value="https://sprihajha.github.io/DynamicDecisionTree/input/laptopRepair.txt"> <br>
-            Antibiotics<input name="chooseTopic" type="radio" value="https://sprihajha.github.io/DynamicDecisionTree/input/dynamicAntibiotic.txt"> <br>
-            Trigonometry<input name="chooseTopic" type="radio" value="https://sprihajha.github.io/DynamicDecisionTree/input/trigonometry.txt"> <br>
-            Employee-based Immigration<input name="chooseTopic" type="radio" value="https://sprihajha.github.io/DynamicDecisionTree/input/immigration.txt"> <br>
-            Derivatives<input name="chooseTopic" type="radio" value="https://sprihajha.github.io/DynamicDecisionTree/input/derivatives.txt"> <br>
-            Tax-free Exchange<input name="chooseTopic" type="radio" value="https://sprihajha.github.io/DynamicDecisionTree/input/tax_free_exchange.txt"> <br>
-            Series Convergence<input name="chooseTopic" type="radio" value="https://sprihajha.github.io/DynamicDecisionTree/input/seriesConvergence.txt"> <br>
-            Commercial Property Appraisal<input name="chooseTopic" type="radio" value="https://sprihajha.github.io/DynamicDecisionTree/input/commercialPropertyAppraisal.txt"> <br>
-            Residential Property Appraisal<input name="chooseTopic" type="radio" value="https://sprihajha.github.io/DynamicDecisionTree/input/residentialPropertyAppraisal.txt"> <br>
-            Federal Tax Rate Calculator <input name = "chooseTopic" type = "radio" value = "https://sprihajha.github.io/DynamicDecisionTree/input/federal_tax_rates.txt"> <br>
-            <br />
-            <button class="btn btn-primary" onclick="input()">Submit</button>
-        </div>
+      <div class="container">
+        <div id="link"></div>
+        <textarea
+          rows="20"
+          cols="140"
+          wrap="off"
+          placeholder="Enter text, select a .txt file from your system, or choose a topic"
+          id="input"
+          style="margin-top: 20px; overflow-y: scroll"
+        ></textarea>
+        <input class="btn btn-primary" type="file" />
+        <br />
+        Choose a topic<br />
+        ESG<input name="chooseTopic" type="radio" value="/files/ESG.txt" />
+        <br />
+        Myeloma<input
+          name="chooseTopic"
+          type="radio"
+          value="/files/myeloma.txt"
+        />
+        <br />
+        Test Input<input
+          name="chooseTopic"
+          type="radio"
+          value="/files/test_input.txt"
+        />
+        <br />
+        Macbook Repair<input
+          name="chooseTopic"
+          type="radio"
+          value="/files/macbookrepair.txt"
+        />
+        <br />
+        Visa<input name="chooseTopic" type="radio" value="/files/visa.txt" />
+        <br />
+        Housing<input
+          name="chooseTopic"
+          type="radio"
+          value="/files/housing.txt"
+        />
+        <br />
+        Social Security<input
+          name="chooseTopic"
+          type="radio"
+          value="/files/collect_social.txt"
+        />
+        <br />
+        Laptop Repair<input
+          name="chooseTopic"
+          type="radio"
+          value="/files/laptopRepair.txt"
+        />
+        <br />
+        Antibiotics<input
+          name="chooseTopic"
+          type="radio"
+          value="/files/dynamicAntibiotic.txt"
+        />
+        <br />
+        Trigonometry<input
+          name="chooseTopic"
+          type="radio"
+          value="/files/trigonometry.txt"
+        />
+        <br />
+        Employee-based Immigration<input
+          name="chooseTopic"
+          type="radio"
+          value="/files/immigration.txt"
+        />
+        <br />
+        Derivatives<input
+          name="chooseTopic"
+          type="radio"
+          value="/files/derivatives.txt"
+        />
+        <br />
+        Tax-free Exchange<input
+          name="chooseTopic"
+          type="radio"
+          value="/files/tax_free_exchange.txt"
+        />
+        <br />
+        Series Convergence<input
+          name="chooseTopic"
+          type="radio"
+          value="/files/seriesConvergence.txt"
+        />
+        <br />
+        Commercial Property Appraisal<input
+          name="chooseTopic"
+          type="radio"
+          value="/files/commercialPropertyAppraisal.txt"
+        />
+        <br />
+        Residential Property Appraisal<input
+          name="chooseTopic"
+          type="radio"
+          value="/files/residentialPropertyAppraisal.txt"
+        />
+        <br />
+        Federal Tax Rate Calculator
+        <input
+          name="chooseTopic"
+          type="radio"
+          value="/files/federal_tax_rates.txt"
+        />
+        <br />
+        <br />
+        <button class="btn btn-primary" onclick="input()">Submit</button>
+      </div>
     </div>
 
-    <script src="../static/MindFusion.Common.js" type="text/javascript"></script>
-    <script src="../static/MindFusion.Diagramming.js" type="text/javascript"></script>
+    <script
+      src="../static/MindFusion.Common.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="../static/MindFusion.Diagramming.js"
+      type="text/javascript"
+    ></script>
     <script src="../static/homepage.js" type="text/javascript"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js" type="text/javascript"></script>
+    <script
+      src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+      type="text/javascript"
+    ></script>
     <!-- <script src="data.js" type="text/javascript"></script> -->
-</body>
-
+  </body>
 </html>
