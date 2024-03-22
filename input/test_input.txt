@@ -3,10 +3,10 @@ Are you happy?
 --if meh, Then get a lollipop. did that help?
 ----if a lot, Then great
 ----if a little, Then get another one
---if no, Would any of these topics cheer you up: myeloma diagnosis, social security card, student visa?
+--if no, Would any of these topics cheer you up: NYU, myeloma, Apple?
 ----if interested in NYU, DOCUMENT: https://www.nyu.edu
 ----if interested in myeloma, DECISIONTREE: https://elliot2878.github.io/decision_tree.github.io/myeloma.txt
-----if interested in APPLE, Which category of apple products are you interested in?
+----if interested in Apple, Which category of Apple products are you interested in?
 ------if interested in iPhone, QUERY: SELECT product_name FROM apple_products WHERE category = 'iPhone' RETURN: Which of the following iPhones are you interested in: RESULT?
 --------If iPhone 15 Pro, QUERY: SELECT product_link FROM apple_products WHERE product_name = 'iPhone 15 Pro' RETURN: You can find this product here: DOCUMENT: RESULT
 --------If iPhone 15, QUERY: SELECT product_link FROM apple_products WHERE product_name = 'iPhone 15' RETURN: You can find this product here: DOCUMENT: RESULT
