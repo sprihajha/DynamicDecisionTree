@@ -1,15 +1,22 @@
 import json
 import sqlite3
 from flask import request
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, send_from_directory
+from flask_cors import CORS
 import csv
 import os
 import re
 import psycopg2
 app = Flask(__name__)
+CORS(app)
 
 # Path to SQLite database file
 DATABASE_FILE = "dt.db"
+
+
+@app.route('/files/<path:filename>')
+def serve_files(filename):
+    return send_from_directory('input', filename)
 
 
 @app.route('/')
@@ -160,7 +167,6 @@ def get_subtree():
         );"""
     ]
 
-
     # sql_command = """CREATE TABLE IF NOT EXISTS houses (
     # house_number SERIAL PRIMARY KEY,
     # house_name TEXT,
@@ -253,7 +259,6 @@ def get_subtree():
 #     return jsonify('', render_template('sql.html', x=sql_ans))
 
 
-
 @app.route('/input_query_return', methods=['POST'])
 def input_query_result():
     data = request.get_json()
@@ -286,7 +291,7 @@ def input_query_result():
     # product_link TEXT);"""
     # crsr.execute(sql_command)
 
-    # iPhone  = [["iPhone 15 Pro", "https://www.apple.com/iphone-15-pro/"], ["iPhone 15", "https://www.apple.com/iphone-15/"], ["iPhone 14", "https://www.apple.com/shop/buy-iphone/iphone-14"], ["iPhone 13", "https://www.apple.com/shop/buy-iphone/iphone-13"]] 
+    # iPhone  = [["iPhone 15 Pro", "https://www.apple.com/iphone-15-pro/"], ["iPhone 15", "https://www.apple.com/iphone-15/"], ["iPhone 14", "https://www.apple.com/shop/buy-iphone/iphone-14"], ["iPhone 13", "https://www.apple.com/shop/buy-iphone/iphone-13"]]
 
     # Mac = [["Mac Pro", "https://www.apple.com/mac-pro/"], ["Mac Studio", "https://www.apple.com/mac-studio/"], ["Mac Mini", "https://www.apple.com/mac-mini/"], ["iMac", "https://www.apple.com/imac/"], ["MacBook Pro 16", "https://www.apple.com/shop/buy-mac/macbook-pro/16-inch"], ["MacBook Pro 14", "https://www.apple.com/shop/buy-mac/macbook-pro/14-inch"], ["MacBook Air M1", "https://www.apple.com/macbook-air-m1/"], ["MacBook Air 13-inch M2", "https://www.apple.com/shop/buy-mac/macbook-air/13-inch-m2"], ["MacBook Air 15-inch M2", "https://www.apple.com/shop/buy-mac/macbook-air/15-inch-m2"]]
 
@@ -306,8 +311,6 @@ def input_query_result():
     # for i in Watch:
     #     sql_command = """INSERT INTO apple_products (category, product_name, product_link) VALUES (?, ?, ?);"""
     #     crsr.execute(sql_command, ("Watch", i[0], i[1]))
-
-
 
     print("current query: " + cur_query)
     try:
@@ -331,8 +334,8 @@ def input_query_result():
     if result == "":
         return jsonify(query_result)
     elif "RESULT" in result:
-        result = result.replace("RESULT", query_result) 
-        
+        result = result.replace("RESULT", query_result)
+
     return jsonify(result)
 
 
