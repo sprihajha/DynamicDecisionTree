@@ -1,0 +1,6 @@
+Are you happy?
+--if yes, Then great
+--if meh, Then get a lollipop. Did that help?
+----if a lot, Then great
+----if a little, Then get another one
+--if no, Then see a shrink
