@@ -124,63 +124,6 @@ def get_subtree():
 #     # print statement will execute if there are no errors
 #     print("Connected to the database")
 
-    sql_commands = [
-        """CREATE TABLE IF NOT EXISTS houses (
-            house_number INTEGER PRIMARY KEY AUTOINCREMENT,
-            house_name TEXT,
-            num_of_bedrooms INTEGER,
-            square_feet INTEGER,
-            swimming_pool INTEGER
-        );""",
-        """CREATE TABLE IF NOT EXISTS comps (
-            house_number INTEGER PRIMARY KEY AUTOINCREMENT,
-            id INTEGER,
-            date TEXT,
-            price INTEGER,
-            bedrooms INTEGER,
-            bathrooms REAL,
-            sqft_living INTEGER,
-            sqft_lot INTEGER,
-            floors INTEGER,
-            waterfront INTEGER,
-            view INTEGER,
-            condition INTEGER,
-            grade INTEGER,
-            sqft_above INTEGER,
-            sqft_basement INTEGER,
-            yr_built INTEGER,
-            yr_renovated INTEGER,
-            zipcode INTEGER,
-            lat REAL,
-            long REAL,
-            sqft_living15 INTEGER,
-            sqft_lot15 INTEGER
-        );""",
-        """CREATE TABLE IF NOT EXISTS federal_tax_rates (
-            bracket_tax_rate INTEGER,
-            min_income_single INTEGER,
-            max_income_single INTEGER,
-            min_income_married INTEGER,
-            max_income_married INTEGER,
-            min_income_head_of_household INTEGER,
-            max_head_of_household INTEGER
-        );"""
-    ]
-
-    # sql_command = """CREATE TABLE IF NOT EXISTS houses (
-    # house_number SERIAL PRIMARY KEY,
-    # house_name TEXT,
-    # num_of_bedrooms INTEGER,
-    # square_feet INTEGER,
-    # swimming_pool BOOLEAN);"""
-    # crsr.execute(sql_command)
-
-    # # SQL command to insert the data in the table
-    # # sql_command = """INSERT INTO houses (house_name, num_of_bedrooms, square_feet, swimming_pool) VALUES (?, ?, ?, ?);"""
-    # # crsr.execute(sql_command, ("Goddard Hall", 1, 1600, 'N'))
-    # # crsr.execute(sql_command, ("Palladium Hall", 2, 3100, 'Y'))
-    # # crsr.execute(sql_command, ("Lipton Hall", 3, 3300, 'N'))
-
     # sql_command = """CREATE TABLE IF NOT EXISTS comps (
     # house_number SERIAL PRIMARY KEY,
     # id INTEGER,
@@ -287,30 +230,30 @@ def input_query_result():
 
     sql_command = """CREATE TABLE IF NOT EXISTS apple_products (
     category TEXT,
-    # product_name TEXT,
-    # product_link TEXT);"""
-    # crsr.execute(sql_command)
+    product_name TEXT,
+    product_link TEXT);"""
+    crsr.execute(sql_command)
 
-    # iPhone  = [["iPhone 15 Pro", "https://www.apple.com/iphone-15-pro/"], ["iPhone 15", "https://www.apple.com/iphone-15/"], ["iPhone 14", "https://www.apple.com/shop/buy-iphone/iphone-14"], ["iPhone 13", "https://www.apple.com/shop/buy-iphone/iphone-13"]]
+    iPhone  = [["iPhone 15 Pro", "https://www.apple.com/iphone-15-pro/"], ["iPhone 15", "https://www.apple.com/iphone-15/"], ["iPhone 14", "https://www.apple.com/shop/buy-iphone/iphone-14"], ["iPhone 13", "https://www.apple.com/shop/buy-iphone/iphone-13"]]
 
-    # Mac = [["Mac Pro", "https://www.apple.com/mac-pro/"], ["Mac Studio", "https://www.apple.com/mac-studio/"], ["Mac Mini", "https://www.apple.com/mac-mini/"], ["iMac", "https://www.apple.com/imac/"], ["MacBook Pro 16", "https://www.apple.com/shop/buy-mac/macbook-pro/16-inch"], ["MacBook Pro 14", "https://www.apple.com/shop/buy-mac/macbook-pro/14-inch"], ["MacBook Air M1", "https://www.apple.com/macbook-air-m1/"], ["MacBook Air 13-inch M2", "https://www.apple.com/shop/buy-mac/macbook-air/13-inch-m2"], ["MacBook Air 15-inch M2", "https://www.apple.com/shop/buy-mac/macbook-air/15-inch-m2"]]
+    Mac = [["Mac Pro", "https://www.apple.com/mac-pro/"], ["Mac Studio", "https://www.apple.com/mac-studio/"], ["Mac Mini", "https://www.apple.com/mac-mini/"], ["iMac", "https://www.apple.com/imac/"], ["MacBook Pro 16", "https://www.apple.com/shop/buy-mac/macbook-pro/16-inch"], ["MacBook Pro 14", "https://www.apple.com/shop/buy-mac/macbook-pro/14-inch"], ["MacBook Air M1", "https://www.apple.com/macbook-air-m1/"], ["MacBook Air 13-inch M2", "https://www.apple.com/shop/buy-mac/macbook-air/13-inch-m2"], ["MacBook Air 15-inch M2", "https://www.apple.com/shop/buy-mac/macbook-air/15-inch-m2"]]
 
-    # iPad = [["IPad Pro", "https://www.apple.com/ipad-pro/"], ["IPad Air", "https://www.apple.com/ipad-air/"], ["IPad (10th Generation)", "https://www.apple.com/shop/buy-ipad/ipad"], ["iPad (9th Generation)", "https://www.apple.com/shop/buy-ipad/ipad-10-2"], ["iPad Mini", "https://www.apple.com/ipad-mini/"]]
+    iPad = [["IPad Pro", "https://www.apple.com/ipad-pro/"], ["IPad Air", "https://www.apple.com/ipad-air/"], ["IPad (10th Generation)", "https://www.apple.com/shop/buy-ipad/ipad"], ["iPad (9th Generation)", "https://www.apple.com/shop/buy-ipad/ipad-10-2"], ["iPad Mini", "https://www.apple.com/ipad-mini/"]]
 
-    # Watch = [["Apple Watch Series 9", "https://www.apple.com/apple-watch-series-9/"], ["Apple Watch Ultra 2", "https://www.apple.com/apple-watch-ultra-2/"], ["Apple Watch SE", "https://www.apple.com/apple-watch-se/"]]
+    Watch = [["Apple Watch Series 9", "https://www.apple.com/apple-watch-series-9/"], ["Apple Watch Ultra 2", "https://www.apple.com/apple-watch-ultra-2/"], ["Apple Watch SE", "https://www.apple.com/apple-watch-se/"]]
 
-    # for i in iPhone:
-    #     sql_command = """INSERT INTO apple_products (category, product_name, product_link) VALUES (?, ?, ?);"""
-    #     crsr.execute(sql_command, ("iPhone", i[0], i[1]))
-    # for i in Mac:
-    #     sql_command = """INSERT INTO apple_products (category, product_name, product_link) VALUES (?, ?, ?);"""
-    #     crsr.execute(sql_command, ("Mac", i[0], i[1]))
-    # for i in iPad:
-    #     sql_command = """INSERT INTO apple_products (category, product_name, product_link) VALUES (?, ?, ?);"""
-    #     crsr.execute(sql_command, ("iPad", i[0], i[1]))
-    # for i in Watch:
-    #     sql_command = """INSERT INTO apple_products (category, product_name, product_link) VALUES (?, ?, ?);"""
-    #     crsr.execute(sql_command, ("Watch", i[0], i[1]))
+    for i in iPhone:
+        sql_command = """INSERT INTO apple_products (category, product_name, product_link) VALUES (?, ?, ?);"""
+        crsr.execute(sql_command, ("iPhone", i[0], i[1]))
+    for i in Mac:
+        sql_command = """INSERT INTO apple_products (category, product_name, product_link) VALUES (?, ?, ?);"""
+        crsr.execute(sql_command, ("Mac", i[0], i[1]))
+    for i in iPad:
+        sql_command = """INSERT INTO apple_products (category, product_name, product_link) VALUES (?, ?, ?);"""
+        crsr.execute(sql_command, ("iPad", i[0], i[1]))
+    for i in Watch:
+        sql_command = """INSERT INTO apple_products (category, product_name, product_link) VALUES (?, ?, ?);"""
+        crsr.execute(sql_command, ("Watch", i[0], i[1]))
 
     print("current query: " + cur_query)
     try:

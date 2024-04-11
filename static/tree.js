@@ -81,12 +81,62 @@ function rootNode() {
     var len = str[id].search(',');
     let s = str[0].substring(len + 1, str[0].length);
 
+    // if (s.includes("QUERY:") && s.includes("RETURN:")) {
+    //     if (s.includes("INPUT")) {
+    //         let regex = /(INPUT\d+: .*?)(?= INPUT\d+:| QUERY:|$)/g;
+    //         let inputSubstrings = s.match(regex) || [];
+
+    //         console.log("inputSubstrings: " + inputSubstrings);
+    //         for (let i = 0; i < inputSubstrings.length; i++) {
+    //             curInputKey = inputSubstrings[i].substring(0, inputSubstrings[i].search(":"));
+    //             curInput = prompt(inputSubstrings[i].substring(inputSubstrings[i].search(":") + 1));
+    //             // forces user to enter input
+    //             while (typeof curInput == 'undefined' || curInput == null) {
+    //                     curInput = prompt(inputSubstrings[i].substring(inputSubstrings[i].search(":") + 1));
+    //             }
+
+    //             if (isNaN(curInput)) {
+    //                 curInput = `"${curInput}"`;
+    //             }
+                
+    //             allInputs[curInputKey] = curInput;
+    //         }
+    //     }
+
+    //     let query = s.substring(s.search("QUERY:") + 7);
+    //     let resultStr = "";
+
+    //     if (s.includes("RETURN:")) {
+    //         query = query.substring(0, query.search("RETURN:"));
+    //         resultStr = s.substring(s.search("RETURN:") + 7);
+    //     }
+
+    //     // Send the input to the server
+    //     $.ajax({
+    //         url: "/input_query_return",
+    //         type: "POST",
+    //         contentType: "application/json",
+    //         async: false,
+    //         data: JSON.stringify({"query": query, "allInputs": allInputs, "resultStr": resultStr}),
+    //         success: function(response) {
+    //             s = response.toString();
+    //             str[ids] = str[ids].substring(0, len + 1) + s
+    //             console.log("s: " + s.toString());
+    //         },
+    //         error: function(request){
+    //             console.log("Error executing query.");
+    //             $("#debug").html(request.responseText);
+    //             $("#debug").html("5566");
+    //         }
+    //     });
+    // }
 
     // detect if the text contains link and add hypertext reference to the link
     // WE WANT TO BE ABLE TO POPULATE TREE NOT LINK EXTERNAL TREE
     let s_len = s.search("https");
     let link = s.substring(s_len, s.length);
     if(s.includes("DOCUMENT") || s.includes("DECISIONTREE")) {
+        console.log("Spot 1 detected")
         let link_ref = '<a href="' + link + '" target="_blank">' + link + '</a>';
         s = s.substring(0, s_len) + link_ref;
             }
@@ -350,7 +400,7 @@ function nextoption(id, originNode) {
     let s_len = s.search("https");
     let link = s.substring(s_len, s.length);
     if(s.includes("DOCUMENT") || s.includes("DECISIONTREE")) {
-        console.log("DOCUMENT is running after INPUT");
+        console.log("Spot 2 detected")
         let link_ref = '<a href="' + link + '" target="_blank">' + link + '</a>';
         s = s.substring(0, s_len) + link_ref;
     }
@@ -566,6 +616,57 @@ function notSure(id, originNode) {
             currTreeIdList.push(parseInt(ids));
             let len = str[ids].search(',');
             let s = str[ids].substring(len + 1, str[ids].length);
+            if (s.includes("QUERY:") && s.includes("RETURN:")) {
+                    if (s.includes("INPUT")) {
+                        let regex = /(INPUT\d+: .*?)(?= INPUT\d+:| QUERY:|$)/g;
+                        let inputSubstrings = s.match(regex) || [];
+            
+                        console.log("inputSubstrings: " + inputSubstrings);
+                        for (let i = 0; i < inputSubstrings.length; i++) {
+                            curInputKey = inputSubstrings[i].substring(0, inputSubstrings[i].search(":"));
+                            curInput = prompt(inputSubstrings[i].substring(inputSubstrings[i].search(":") + 1));
+                            // forces user to enter input
+                            while (typeof curInput == 'undefined' || curInput == null) {
+                                    curInput = prompt(inputSubstrings[i].substring(inputSubstrings[i].search(":") + 1));
+                            }
+            
+                            if (isNaN(curInput)) {
+                                curInput = `"${curInput}"`;
+                            }
+                            
+                            allInputs[curInputKey] = curInput;
+                        }
+                    }
+            
+                    let query = s.substring(s.search("QUERY:") + 7);
+                    let resultStr = "";
+            
+                    if (s.includes("RETURN:")) {
+                        query = query.substring(0, query.search("RETURN:"));
+                        resultStr = s.substring(s.search("RETURN:") + 7);
+                    }
+            
+                    // Send the input to the server
+                    $.ajax({
+                        url: "/input_query_return",
+                        type: "POST",
+                        contentType: "application/json",
+                        async: false,
+                        data: JSON.stringify({"query": query, "allInputs": allInputs, "resultStr": resultStr}),
+                        success: function(response) {
+                            s = response.toString();
+                            str[ids] = str[ids].substring(0, len + 1) + s
+                            console.log("s: " + s.toString());
+                        },
+                        error: function(request){
+                            console.log("Error executing query.");
+                            $("#debug").html(request.responseText);
+                            $("#debug").html("5566");
+                        }
+                    });
+                }
+
+                
             console.log("check ids1: " + ids);
             // Shrink the node if the text is small. 
             if(s.length < 40) {
@@ -582,6 +683,7 @@ function notSure(id, originNode) {
             let s_len = s.search("https");
             let dtlink = s.substring(s_len, s.length);
             if(s.includes("DOCUMENT") || s.includes("DECISIONTREE")) {
+                console.log("Spot 3 detected")
                 let link_ref = '<a href="' + dtlink + '" target="_blank">' + dtlink + '</a>';
                 s = s.substring(0, s_len) + link_ref;
             }
@@ -683,7 +785,7 @@ function notSure(id, originNode) {
         
             }    
             else {            
-                var val = `<div id="d1"><p>` + str[ids] + `</p></div>`;
+                var val = `<div id="d1"><p>` + str[ids] + `</p></div>`;          
                 if (arr[ids].length > 0 && arr[id].length <= 5) {
                     val += `<div><select data-interactive="true" data-event-change="selectClick" name= "${ids}" id= "${ids}"><option value="none" selected></option>`;
                     for (var j = 0; j < arr[ids].length; j++) {
@@ -770,6 +872,56 @@ function showCheckbox(id, originNode, results) {
                 let len = str[ids].search(',');
                 let s = str[ids].substring(len + 1, str[ids].length);
 
+                if (s.includes("QUERY:") && s.includes("RETURN:")) {
+                    if (s.includes("INPUT")) {
+                        let regex = /(INPUT\d+: .*?)(?= INPUT\d+:| QUERY:|$)/g;
+                        let inputSubstrings = s.match(regex) || [];
+            
+                        console.log("inputSubstrings: " + inputSubstrings);
+                        for (let i = 0; i < inputSubstrings.length; i++) {
+                            curInputKey = inputSubstrings[i].substring(0, inputSubstrings[i].search(":"));
+                            curInput = prompt(inputSubstrings[i].substring(inputSubstrings[i].search(":") + 1));
+                            // forces user to enter input
+                            while (typeof curInput == 'undefined' || curInput == null) {
+                                    curInput = prompt(inputSubstrings[i].substring(inputSubstrings[i].search(":") + 1));
+                            }
+            
+                            if (isNaN(curInput)) {
+                                curInput = `"${curInput}"`;
+                            }
+                            
+                            allInputs[curInputKey] = curInput;
+                        }
+                    }
+            
+                    let query = s.substring(s.search("QUERY:") + 7);
+                    let resultStr = "";
+            
+                    if (s.includes("RETURN:")) {
+                        query = query.substring(0, query.search("RETURN:"));
+                        resultStr = s.substring(s.search("RETURN:") + 7);
+                    }
+            
+                    // Send the input to the server
+                    $.ajax({
+                        url: "/input_query_return",
+                        type: "POST",
+                        contentType: "application/json",
+                        async: false,
+                        data: JSON.stringify({"query": query, "allInputs": allInputs, "resultStr": resultStr}),
+                        success: function(response) {
+                            s = response.toString();
+                            str[ids] = str[ids].substring(0, len + 1) + s
+                            console.log("s: " + s.toString());
+                        },
+                        error: function(request){
+                            console.log("Error executing query.");
+                            $("#debug").html(request.responseText);
+                            $("#debug").html("5566");
+                        }
+                    });
+                }
+
                 // Shrink the node if the text is small. 
                 if(s.length < 40) {
                     by = 22;
@@ -785,7 +937,9 @@ function showCheckbox(id, originNode, results) {
                 let s_len = s.search("https");
                 let dtlink = s.substring(s_len, s.length);
                 if(s.includes("DOCUMENT") || s.includes("DECISIONTREE")) {
+                    console.log("Spot 4 detected")
                     let link_ref = '<a href="' + dtlink + '" target="_blank">' + dtlink + '</a>';
+                    console.log("Link: " + link_ref)
                     s = s.substring(0, s_len) + link_ref;
                 }
                 
