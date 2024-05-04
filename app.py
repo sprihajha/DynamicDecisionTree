@@ -203,7 +203,7 @@ def get_subtree():
 
 
 @app.route('/input_query_return', methods=['POST'])
-def input_query_result():
+def input_query_return():
     data = request.get_json()
     query = data.get("query")
     cur_query = query
@@ -261,11 +261,17 @@ def input_query_result():
         query_result = crsr.fetchall()
         print("Original query result: ", query_result)
         # Convert query_result to string and truncate outer parentheses and last comma
-        query_result = ' '.join([str(elem) for elem in query_result])[1:-2]
+        if "(".count(str(query_result)) > 1:
+            query_result = query_result = ' '.join([str(elem) for elem in query_result])[:-1]
+        else:
+            query_result = ' '.join([str(elem) for elem in query_result])[1:-2]
+
         if len(query_result) > 0 and query_result[0] == "'" and query_result[-1] == "'":
             query_result = query_result[1:-1]
+
         if query_result == "":
             query_result = "No query results found."
+            
         print("Converted query result: " + query_result)
     except Exception as e:
         query_result = repr(e)
